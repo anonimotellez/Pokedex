@@ -21,6 +21,7 @@ class PokemonCubit extends Cubit<PokemonState> {
 
     await Future.delayed(const Duration(milliseconds: 300));
 
+    //si no es falso cargar desde cero
     if (!loadMore) {
       emit(PokemonLoading());
       _offset = 0;
@@ -29,9 +30,10 @@ class PokemonCubit extends Cubit<PokemonState> {
     try {
       final pokemons = await repository.getPokemons(_offset, _limit);
 
-      if (state is PokemonLoaded && loadMore) {
+      if (state is PokemonLoaded) {
         final current = (state as PokemonLoaded).pokemons;
         allPokemons.addAll(pokemons);
+        // Emitimos un nuevo estado con la lista combinada (lo viejo + lo nuevo)
         emit(PokemonLoaded([...current, ...pokemons]));
       } else {
         allPokemons = [...pokemons];

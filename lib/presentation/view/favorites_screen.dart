@@ -25,17 +25,10 @@ class FavoritesScreen extends StatelessWidget {
             return const Center(child: Text('No tienes favoritos'));
           }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              getIt<PokemonCubit>().loadPokemons();
-              getIt<FavoritesBloc>().add(LoadFavorites());
-              await Future.delayed(const Duration(milliseconds: 500));
-            },
-            child: PokemonGrid(
-              pokemons: favoritePokemons,
-              scrollController: ScrollController(),
-              colums: 2,
-            ),
+          return PokemonGrid(
+            pokemons: favoritePokemons,
+            scrollController: ScrollController(),
+            colums: 2,
           );
         },
       ),
